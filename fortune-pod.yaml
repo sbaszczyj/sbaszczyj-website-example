@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: fortune
+  labels:
+    app: fortune
+spec:
+  containers:
+  - name: webserver
+    image: nginx:alpine
+    volumeMounts:
+    - name: html
+      mountPath: /usr/share/nginx/html
+    ports:
+    - containerPort: 80
+      protocol: TCP
+  - name: sidecar
+    image: openweb/git-sync
+    volumeMounts:
+    - name: html
+      mountPath: /var/git-repo
+  volumes:
+  - name: html
+    emptyDir:
+      medium: Memory
